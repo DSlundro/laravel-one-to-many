@@ -7,6 +7,6 @@
         {{$post->content}}
     </div>
     <div class="metadata">
-        Category: {{$post->category ? $post->category->name : 'Uncategorized'}}
+        Category: {{$post->category ? $post->category->name : 'Not assigned'}}
     </div>
 @stop

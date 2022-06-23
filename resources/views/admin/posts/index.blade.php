@@ -13,6 +13,7 @@
             <tr>
                 <th>ID</th>
                 <th>Title</th>
+                <th>Category</th>
                 <th>Content</th>
                 <th>Slug</th>
                 <th>Cover Image</th>
@@ -24,6 +25,7 @@
             <tr>
                 <td scope="row">{{$post->id}}</td>
                 <td>{{$post->title}}</td>
+                <td>{{$post->category ? $post->category->name : 'Not assigned'}}</td>
                 <td width="400">{{mb_strimwidth($post->content, 0, 300, "...")}}</td>
                 <td>{{$post->slug}}</td>
                 <td><img width="150" src="{{$post->cover_image}}" alt="{{$post->title}}"></td>

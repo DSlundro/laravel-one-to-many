@@ -7,7 +7,6 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
-import App from './views/App'
 
 
 /**
@@ -30,6 +29,5 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  */
 
 const app = new Vue({
-    el: '#root',
-    render: h => h(App)
+    el: '#app',
 });
