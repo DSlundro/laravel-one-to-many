@@ -42,16 +42,6 @@
     </div>
 
     <div class="mb-3">
-        <label for="tags" class="form-label">Tags</label>
-        <select multiple name="tag" id="tag">
-            <option value="">Select a category</option>
-            @foreach($tags as $tag)
-                <option value="{{$tag->id}}" {{old('tag') == $tag->id ? 'selected' : ''}}>{{$tag->name}}</option>
-            @endforeach
-        </select>
-    </div>
-
-    <div class="mb-3">
         <label for="content" class="form-label">Content</label>
         <textarea class="form-control" name="content" id="content" rows="3">{{old('content')}}</textarea>
     </div>
