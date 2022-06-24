@@ -50675,7 +50675,7 @@ module.exports = "/images/hero-bg.jpg?28776d65afbf9dc9ee3e960b9c471e65";
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\qwerty\Desktop\Classe60\laravel\laravel-one-to-many\resources\js\front.js */"./resources/js/front.js");
+module.exports = __webpack_require__(/*! C:\Users\qwerty\Desktop\Classe60\laravel\laravel-many-to-many\resources\js\front.js */"./resources/js/front.js");
 
 
 /***/ })

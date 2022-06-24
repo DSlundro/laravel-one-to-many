@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddCategoryIdToPostsTable extends Migration
+class AddUserIdToPostsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +14,9 @@ class AddCategoryIdToPostsTable extends Migration
     public function up()
     {
         Schema::table('posts', function (Blueprint $table) {
-            // settare la nuova colonna mettendo 'unsignedBigInteger'
-            $table->unsignedBigInteger('category_id')->nullable()->after('id');
-            // impostare poi la chiave esterna e a cosa fa riferimento
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');
+            $table->unsignedBigInteger('user_id')->nullable()->after('id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+            //
         });
     }
 
@@ -28,13 +27,10 @@ class AddCategoryIdToPostsTable extends Migration
      */
     public function down()
     {
-        // inverso quello fatto sopra
         Schema::table('posts', function (Blueprint $table) {
-
-            // cancellare il vincolo con referenza alla tabella "posts"
-            $table->dropForeign('posts_category_id_foreign');
-            // cancellare la colonna
-            $table->dropColumn('category_id');
+            //
+            $table->dropForeign('posts_user_id_foreign');
+            $table->dropColumn('user_id');
         });
     }
 }

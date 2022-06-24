@@ -1,12 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
-use App\Models\Post;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostRequest;
 use App\Models\Category;
-
+use App\Models\Tag;
+use App\Models\Post;
+use App\Models\User;
 
 class PostController extends Controller
 {
@@ -18,7 +18,7 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::orderByDesc('id')->get();
-        //dd($posts);
+      /*   dd($posts); */
         return view('admin.posts.index', compact('posts'));
     }
 
@@ -29,35 +29,35 @@ class PostController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
-        //dd($categories);
-        return view('admin.posts.create', compact('categories'));
+        //
+        $categories = Category::orderByDesc('id')->get();
+        $tags = Tag::orderByDesc('id')->get();
+
+
+
+        return view('admin.posts.create', compact('categories','tags'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\PostRequest $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(PostRequest $request)
     {
-        //dd($request->all());
 
-        // se l'ID inserito esiste tar gli ID della tabella categories
-        
-
-        // Validate data
         $val_data = $request->validated();
-        // Gererate the slug
         $slug = Post::generateSlug($request->title);
         $val_data['slug'] = $slug;
-        // $val_data['category_id'] = $request->category_id;
-        //dd($val_data);
-        // create the resource
-        Post::create($val_data);
-        // redirect to a get route
-        return redirect()->route('admin.posts.index')->with('message', 'Post Created Successfully');
+
+
+        $new_post = Post::create($val_data);
+        $new_post->tags()->attach($request->tags );
+
+
+        return redirect()->route('admin.posts.index')->with('message','Post Created Successfully');
+
     }
 
     /**
@@ -68,6 +68,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        //
         return view('admin.posts.show', compact('post'));
     }
 
@@ -79,33 +80,41 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        //
         $categories = Category::all();
-        return view('admin.posts.edit', compact('post', 'categories'));
+        $tags = Tag::all();
+
+        /* Metodo nel caso avessimo piu variabili  */
+   /*      $data = [
+            'post'=> $post,
+            'category' => Category::all(),
+            'tags' => Tag::all(),
+        ]; */
+        return view('admin.posts.edit', compact('post', 'categories', 'tags'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\PostRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
     public function update(PostRequest $request, Post $post)
     {
-        //dd($request->all());
-
-        // validate data
+        //
         $val_data = $request->validated();
-        //dd($val_data);
-        // Gererate the slug
+
         $slug = Post::generateSlug($request->title);
-        //dd($slug);
+        // old slug version
+       /*  $slug = Str::slug($request->title,'-'); */
         $val_data['slug'] = $slug;
-        // update the resource
+
+        $post->tags()->sync($request->tags);
         $post->update($val_data);
 
-        // redirect to get route
-        return redirect()->route('admin.posts.index')->with('message', "$post->title updated successfully");
+
+        return redirect()->route('admin.posts.index');
     }
 
     /**
@@ -117,9 +126,8 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         //
-
         $post->delete();
-        return redirect()->route('admin.posts.index')->with('message', "$post->title deleted successfully");
 
+        return redirect()->route('admin.posts.index')->with('message','Post Deleted Successfully');;
     }
 }
